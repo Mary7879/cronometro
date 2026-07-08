@@ -1,67 +1,22 @@
-import time
-import threading
+ Cronômetro Python
 
-class Cronometro:
-    def __init__(self):
-        self.tempo_decorrido = 0
-        self.ativo = False
-        self.thread = None
+Um cronômetro simples, leve e preciso desenvolvido em Python, utilizando `threading` para não bloquear o terminal.
 
-    def iniciar(self):
-        if not self.ativo:
-            self.ativo = True
-            self.thread = threading.Thread(target=self._executar)
-            self.thread.start()
-        else:
-            print("O cronômetro já está em execução.")
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
+![License](https://img.shields.io/badge/License-MIT-green
+Funcionalidades
 
-    def parar(self):
-        if self.ativo:
-            self.ativo = False
-            self.thread.join()
-        else:
-            print("O cronômetro já está parado.")
+- Iniciar, pausar e resetar o cronômetro
+- Exibição em tempo real no terminal (`HH:MM:SS`)
+- Não bloqueia a execução principal (thread separada)
+- Método `obter_tempo()` para integração com outros programas
+- Controle via comandos no terminal (exemplo interativo)
 
-    def resetar(self):
-        self.tempo_decorrido = 0
-        if self.ativo:
-            self.parar()
-            self.iniciar()
+Instalação
 
-    def _executar(self):
-        inicio = time.time()
-        while self.ativo:
-            time.sleep(1)
-            self.tempo_decorrido = time.time() - inicio
-            self._mostrar_tempo()
+```bash
+git clone https://github.com/SEU_USUARIO/cronometro-python.git
+cd cronometro-python
 
-    def _mostrar_tempo(self):
-        minutos, segundos = divmod(int(self.tempo_decorrido), 60)
-        horas, minutos = divmod(minutos, 60)
-        tempo_formatado = f"{horas:02}:{minutos:02}:{segundos:02}"
-        print(f"\r{tempo_formatado}", end='')
-
-# Exemplo de uso
-if __name__ == "__main__":
-    cronometro = Cronometro()
-    
-    try:
-        print("Pressione Enter para iniciar o cronômetro.")
-        input()
-        cronometro.iniciar()
-        
-        print("\nPressione Enter para parar o cronômetro.")
-        input()
-        cronometro.parar()
-
-        print("\nPressione Enter para reiniciar o cronômetro.")
-        input()
-        cronometro.resetar()
-
-        print("\nPressione Enter para parar o cronômetro e sair.")
-        input()
-        cronometro.parar()
-
-    except KeyboardInterrupt:
-        cronometro.parar()
-        print("\nCronômetro interrompido.")
+# Instalar como pacote (opcional)
+pip install -e .
